@@ -72,7 +72,7 @@ export LU::static := proc(
     # Gaussian elimination
     tmp         := [k+1..-1];
     M[k,   k]   := _self:-m_LEM:-Veil(_self:-m_LEM,  pivot["value"]);
-    M[tmp, k]   := _self:-m_LEM:-Veil~(_self:-m_LEM, M[tmp, k]/M[k, k]);
+    M[tmp, k]   := _self:-m_LEM:-Veil~(_self:-m_LEM, M[tmp, k]/pivot["value"]);
     M[k,   tmp] := _self:-m_LEM:-Veil~(_self:-m_LEM, M[k, tmp]);
     M[tmp, tmp] := _self:-m_LEM:-Veil~(_self:-m_LEM, M[tmp, tmp]-M[tmp, k].M[k, tmp]);
 
@@ -239,7 +239,7 @@ export LUgetUQT::static := proc(
   _self::LAST,
   $)::Matrix;
 
-  description "Return the matrix U^T*Q.";
+  description "Return the matrix U*Q^T.";
 
   local U, UT, c, n, i, rnk;
 
@@ -263,7 +263,7 @@ export LUgetUQT::static := proc(
 
   # Apply inverse permutation Q
   for i from 1 to n do
-    UT[1..-1, c[i]] := U[1..rnk, i];
+    UT[1..rnk, c[i]] := U[1..rnk, i];
   end do;
 
   # Return outputs
